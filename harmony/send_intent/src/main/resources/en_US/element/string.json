@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "module description"
+    },
+    {
+      "name": "send_intent_desc",
+      "value": "description"
+    },
+    {
+      "name": "send_intent_label",
+      "value": "label"
+    }
+  ]
+}
