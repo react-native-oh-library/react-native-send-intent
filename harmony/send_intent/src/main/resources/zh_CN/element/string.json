@@ -1,0 +1,16 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "模块描述"
+    },
+    {
+      "name": "send_intent_desc",
+      "value": "description"
+    },
+    {
+      "name": "send_intent_label",
+      "value": "label"
+    }
+  ]
+}
