@@ -35,6 +35,11 @@ interface FileChooserOptions {
     subject?: string
     type: string
 }
+
+interface FilePickerOptions {
+    type?: string
+    title?: string
+}
 // type TextType = typeof TEXT_HTML | typeof TEXT_PLAIN | undefined
 interface TextIntentConfig {
     title: string
@@ -42,6 +47,8 @@ interface TextIntentConfig {
     type: string
 }
 export interface Spec extends TurboModule {
+    TEXT_PLAIN: () => string
+    TEXT_HTML: () => string
     sendText: (config: TextIntentConfig) => void
     sendPhoneCall: (phoneNumber: string, phoneAppOnly?: boolean) => void
     sendPhoneDial: (phoneNumber: string, phoneAppOnly?: boolean) => void
@@ -67,12 +74,11 @@ export interface Spec extends TurboModule {
     openChromeIntent: (dataUri: string) => Promise<boolean>
     openDownloadManager: () => void
     openFileChooser: (options: FileChooserOptions, title: string) => void
+    openFilePicker: (options : FilePickerOptions, filePath:() => void) => void
     openEmailApp: () => void
     openAllEmailApp: () => void
     requestIgnoreBatteryOptimizations: () => Promise<boolean>
     showIgnoreBatteryOptimizationsSettings: () => void
     openAppWithUri: (intentUri: string, extras?: { [index: string]: string }) => Promise<boolean>
-    // TEXT_PLAIN: unique symbol
-    // TEXT_HTML: unique symbol
 };
 export const NativeSendIntent =  TurboModuleRegistry.getEnforcing<Spec>('SendIntentNativeModule');

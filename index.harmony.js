@@ -7,11 +7,7 @@ var SendIntentHarmony = {
     TEXT_PLAIN: "text/plain",
     TEXT_HTML: "text/html",
     sendText(config) {
-        if ("title" in config && config.title != null && config.title.length > 0) {
-            RNSendIntentHarmony.sendTextWithTitle(config.title, config.text, config.type || "text/plain");
-        } else {
-            RNSendIntentHarmony.sendText(config.text, config.type || "text/plain");
-        }
+        RNSendIntentHarmony.sendText(config.text, config.type || "text/plain");
     },
     sendPhoneCall(phoneNumber, phoneAppOnly = false) {
         RNSendIntentHarmony.sendPhoneCall(phoneNumber, phoneAppOnly);
