@@ -46,6 +46,14 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
     this.logger = this.ctx.logger.clone(LOGGER_NAME);
   }
 
+  TEXT_PLAIN(): string {
+    return 'text/plain'
+  }
+
+  TEXT_HTML(): string {
+    return 'text/html'
+  }
+
   sendText(config: TM.SendIntentNativeModule.TextIntentConfig): void {
     let data: systemShare.SharedData = new systemShare.SharedData({
       utd: utd.UniformDataType.PLAIN_TEXT,
@@ -330,63 +338,57 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
   }
 
   openApp(packageName: string, extras: Object): Promise<boolean> {
-    let context = this.ctx.uiAbilityContext;
-    let flag
-    let want: Want = {
-      bundleName: packageName,
-      abilityName: 'EntryAbility'
-    };
-    context.startAbility(want)
-      .then(() => {
-        flag = true
-        Promise.resolve(true)
-      })
-      .catch(() => {
-        flag = false
-        Promise.resolve(false)
-      })
-    return Promise.resolve(flag)
+    return new Promise((resolve, reject) => {
+      let context = this.ctx.uiAbilityContext;
+      let want: Want = {
+        bundleName: packageName,
+        abilityName: 'EntryAbility'
+      };
+      context.startAbility(want)
+        .then(() => {
+          resolve(true)
+        })
+        .catch(() => {
+          resolve(false)
+        })
+    });
   }
 
   openAppWithData(packageName: string, dataUri: string, mimeType: string, extras: Object): Promise<boolean> {
-    let context = this.ctx.uiAbilityContext;
-    let flag
-    let want: Want = {
-      bundleName: packageName,
-      uri: dataUri,
-      type: mimeType,
-      parameters: {}
-    };
-    context.startAbility(want)
-      .then(() => {
-        flag = true
-        Promise.resolve(true)
-      })
-      .catch(() => {
-        flag = false
-        Promise.resolve(false)
-      })
-    return Promise.resolve(flag)
+    return new Promise((resolve, reject) => {
+      let context = this.ctx.uiAbilityContext;
+      let want: Want = {
+        bundleName: packageName,
+        uri: dataUri,
+        type: mimeType,
+        parameters: {}
+      };
+      context.startAbility(want)
+        .then(() => {
+          resolve(true)
+        })
+        .catch(() => {
+          resolve(false)
+        })
+    });
   }
 
   openChromeIntent(dataUri: string): Promise<boolean> {
-    let context = this.ctx.uiAbilityContext;
-    let flag
-    let want: Want = {
-      "action": "ohos.want.action.viewData",
-      "entities": ["entity.system.browsable"],
-      "uri": dataUri,
-    }
-    context.startAbility(want)
-      .then(() => {
-        flag = true
-        Promise.resolve(true)
-      })
-      .catch(() => {
-        flag = false
-        Promise.resolve(false)
-      })
-    return Promise.resolve(flag)
+    return new Promise((resolve, reject) => {
+      let context = this.ctx.uiAbilityContext;
+      let want: Want = {
+        "action": "ohos.want.action.viewData",
+        "entities": ["entity.system.browsable"],
+        "uri": dataUri,
+      };
+      context.startAbility(want)
+        .then(() => {
+          resolve(true)
+        })
+        .catch(() => {
+          resolve(false)
+        })
+    });
   }
 
   openDownloadManager(): void {
@@ -407,19 +409,28 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
       };
       context.startAbility(want)
     }else {
-      let uris: Array<string> = [];
-      const documentViewPicker = new picker.DocumentViewPicker();
-      const documentSelectOptions = new picker.DocumentSelectOptions();
-      documentViewPicker.select(documentSelectOptions).then((documentSelectResult: Array<string>) => {
-        uris = documentSelectResult;
-      }).catch((err) => {
-        this.logger.error(`Invoke documentViewPicker.select failed, code is ${err.code}, message is ${err.message}`)
-      })
+      let want: Want = {
+        uri: options.fileUrl,
+        type: options.type,
+        flags: wantConstant.Flags.FLAG_AUTH_WRITE_URI_PERMISSION,
+      }
+      context.startAbility(want)
     }
-
   }
 
-  // 打开电子邮件
+  openFilePicker(options: TM.SendIntentNativeModule.FilePickerOptions, filePath: (url) => void):void {
+    let uris: Array<string> = [];
+    const documentViewPicker = new picker.DocumentViewPicker();
+    const documentSelectOptions = new picker.DocumentSelectOptions();
+    documentViewPicker.select(documentSelectOptions).then((documentSelectResult: Array<string>) => {
+      uris = documentSelectResult;
+      filePath(uris)
+      return uris
+    }).catch((err) => {
+      this.logger.error(`Invoke documentViewPicker.select failed, code is ${err.code}, message is ${err.message}`)
+    })
+  }
+
   openEmailApp(): void {
     let context = this.ctx.uiAbilityContext;
     let want: Want = {
