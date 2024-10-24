@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { RNOHContext, RNOHLogger, TurboModule } from '@rnoh/react-native-openharmony/ts';
+import { UITurboModuleContext, RNOHLogger, TurboModule } from '@rnoh/react-native-openharmony/ts';
 import { TM } from '@rnoh/react-native-openharmony/generated/ts';
 import call from '@ohos.telephony.call';
 import { Want } from '@kit.AbilityKit';
@@ -41,7 +41,7 @@ const LOGGER_NAME = '[RHOH] RNKeys';
 export class RNSendIntentTurboModule extends TurboModule implements TM.SendIntentNativeModule.Spec {
   private logger: RNOHLogger;
 
-  constructor(ctx: RNOHContext) {
+  constructor(ctx: UITurboModuleContext) {
     super(ctx);
     this.logger = this.ctx.logger.clone(LOGGER_NAME);
   }
