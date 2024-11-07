@@ -57,7 +57,7 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
   sendText(config: TM.SendIntentNativeModule.TextIntentConfig): void {
     let data: systemShare.SharedData = new systemShare.SharedData({
       utd: utd.UniformDataType.PLAIN_TEXT,
-      content: `${config.text}`,
+      content: `${config}`,
     });
     let controller: systemShare.ShareController = new systemShare.ShareController(data);
     let context = this.ctx.uiAbilityContext;
@@ -192,19 +192,19 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
       if (item.text) {
         data.addRecord({
           utd: utd.UniformDataType.TEXT,
-          uri: item.text
+          content: item.text
         });
       }
       if (item.imageUrl) {
         data.addRecord({
           utd: utd.UniformDataType.PNG,
-          uri: item.imageUrl
+          content: item.imageUrl
         });
       }
       if (item.videoUrl) {
         data.addRecord({
           utd: utd.UniformDataType.VIDEO,
-          uri: item.videoUrl
+          content: item.videoUrl
         });
       }
     })
