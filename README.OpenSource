@@ -1,0 +1,11 @@
+[
+    {
+        "Name": "react-native-send-intent",
+        "License": "MIT License",
+        "License File": "https://github.com/lucasferreira/react-native-send-intent?tab=readme-ov-file#license",
+        "Version Number": "1.3.0",
+        "Owner" : "xiafeng@huawei.com",
+        "Upstream URL": "https://github.com/lucasferreira/react-native-send-intent",
+        "Description": "React Native for send sms, open custom apps, make phone calls and etc"
+    }
+]
