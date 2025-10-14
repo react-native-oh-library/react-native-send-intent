@@ -304,20 +304,8 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
   }
 
   gotoHomeScreen(): void {
-    try {
-      let context = this.ctx.uiAbilityContext;
-      context.terminateSelf((err: BusinessError) => {
-        if (err.code) {
-          this.logger.error(`terminateSelf failed, code is ${err.code}, message is ${err.message}`);
-          return;
-        }
-        this.logger.info('terminateSelf succeed');
-      });
-    } catch (err) {
-      let code = (err as BusinessError).code;
-      let message = (err as BusinessError).message;
-      this.logger.error(`terminateSelf failed, code is ${code}, message is ${message}`);
-    }
+    let context = this.ctx.uiAbilityContext;
+    context.moveAbilityToBackground()
   }
 
   openApp(packageName: string, extras: Object): Promise<boolean> {
@@ -385,13 +373,13 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
 
   openFileChooser(options: TM.SendIntentNativeModule.FileChooserOptions, title: string): void {
     let context = this.ctx.uiAbilityContext;
-    if(options.subject) {
+    if (options.subject) {
       let want: Want = {
         action: 'ohos.want.action.sendData',
         uri: `?subject=${options.subject}&body=$`
       };
       context.startAbility(want)
-    }else {
+    } else {
       let want: Want = {
         uri: options.fileUrl,
         type: options.type,
@@ -401,7 +389,7 @@ export class RNSendIntentTurboModule extends TurboModule implements TM.SendInten
     }
   }
 
-  openFilePicker(options: TM.SendIntentNativeModule.FilePickerOptions, filePath: (url) => void):void {
+  openFilePicker(options: TM.SendIntentNativeModule.FilePickerOptions, filePath: (url) => void): void {
     let uris: Array<string> = [];
     const documentViewPicker = new picker.DocumentViewPicker();
     const documentSelectOptions = new picker.DocumentSelectOptions();
